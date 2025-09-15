@@ -93,9 +93,12 @@ class CommonUserHomeScreen extends StatelessWidget {
                                         SizedBox(width: 4),
                                         Text(
                                           clientHomeController
-                                              .selectedClient
-                                              .value!
-                                              .role!,
+                                                      .selectedClient
+                                                      .value!
+                                                      .role ==
+                                                  'admin'
+                                              ? 'Administrador'
+                                              : 'Usuário Regular',
                                         ),
                                       ],
                                     ),
