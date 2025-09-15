@@ -39,9 +39,9 @@ O core contém apenas serviços genéricos reutilizáveis (ex.: ApiClient) para 
 
 ## Serviços e Repositórios
 
-● ApiClient: centraliza chamadas HTTP, adicionando token JWT automaticamente.
-● Repositórios: camada intermediária entre Controller e Service.
-● Services: realizam chamadas HTTP reais.
+- ApiClient: centraliza chamadas HTTP, adicionando token JWT automaticamente.
+- Repositórios: camada intermediária entre Controller e Service.
+- Services: realizam chamadas HTTP reais.
 
 Benefício: separação de lógica de negócios da API, facilitando testes e
 mudançasmudanças na API sem impactar a UI.
@@ -55,20 +55,20 @@ seguro por role.
 
 ## UI e Componentização
 
-● Componentes reutilizáveis: HeaderComponent, ClientDialog.
-● DataTable responsiva: SingleChildScrollView + Scrollbar.
-● Formulários: TextFormField + TextEditingController, máscaras, validações
-condicionais, switches.
+- Componentes reutilizáveis: HeaderComponent, ClientDialog.
+- DataTable responsiva: SingleChildScrollView + Scrollbar.
+- Formulários: TextFormField + TextEditingController, máscaras, validações
+  condicionais, switches.
 
 Benefício: reutilização, consistência visual e experiência do usuário aprimorada.
 
 ## Escolhas Gerais
 
-● Segurança: token JWT seguro no FlutterSecureStorage.
-● Escalabilidade: fácil adição de novas telas e funcionalidades.
-● Reatividade: GetX .obs atualiza UI automaticamente.
-● Navegação: GoRouter declarativo, context.go() e redirect para fluxo seguro.
-● Estado: GetX, Controllers por tela, variáveis reativas.
+- Segurança: token JWT seguro no FlutterSecureStorage.
+- Escalabilidade: fácil adição de novas telas e funcionalidades.
+- Reatividade: GetX .obs atualiza UI automaticamente.
+- Navegação: GoRouter declarativo, context.go() e redirect para fluxo seguro.
+- Estado: GetX, Controllers por tela, variáveis reativas.
 
 ## Pré-requisitos
 
