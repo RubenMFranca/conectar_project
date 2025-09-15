@@ -2,6 +2,7 @@ import 'package:conectar_project/controllers/common_user_home_controller.dart';
 import 'package:conectar_project/view/widgets/header_component.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CommonUserHomeScreen extends StatelessWidget {
   const CommonUserHomeScreen({super.key});
@@ -51,6 +52,23 @@ class CommonUserHomeScreen extends StatelessWidget {
                                 );
                               }
                               return Obx(() {
+                                if (clientHomeController.isLoading.value ||
+                                    clientHomeController.selectedClient.value ==
+                                        null) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+
+                                final client =
+                                    clientHomeController.selectedClient.value!;
+                                final formattedDate = DateFormat('dd/MM/yyyy')
+                                    .format(
+                                      DateTime.parse(
+                                        client.createdAt.toString(),
+                                      ),
+                                    );
+
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -61,12 +79,7 @@ class CommonUserHomeScreen extends StatelessWidget {
                                           style: theme.textTheme.titleSmall,
                                         ),
                                         SizedBox(width: 4),
-                                        Text(
-                                          clientHomeController
-                                              .selectedClient
-                                              .value!
-                                              .name,
-                                        ),
+                                        Text(client.name),
                                       ],
                                     ),
                                     Row(
@@ -76,30 +89,17 @@ class CommonUserHomeScreen extends StatelessWidget {
                                           style: theme.textTheme.titleSmall,
                                         ),
                                         SizedBox(width: 4),
-                                        Text(
-                                          clientHomeController
-                                              .selectedClient
-                                              .value!
-                                              .email,
-                                        ),
+                                        Text(client.email),
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         Text(
-                                          'Papel do usuário: ',
+                                          'Data de criação: ',
                                           style: theme.textTheme.titleSmall,
                                         ),
                                         SizedBox(width: 4),
-                                        Text(
-                                          clientHomeController
-                                                      .selectedClient
-                                                      .value!
-                                                      .role ==
-                                                  'admin'
-                                              ? 'Administrador'
-                                              : 'Usuário Regular',
-                                        ),
+                                        Text(formattedDate),
                                       ],
                                     ),
                                   ],
