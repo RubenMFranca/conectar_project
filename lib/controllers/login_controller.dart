@@ -51,6 +51,13 @@ class LoginController extends GetxController {
 
       userRole.value = loginModel!.user.role ?? '';
 
+      await storage.write(key: 'token', value: loginModel!.accessToken);
+
+      final userId = loginModel?.user.id;
+      if (userId != null) {
+        await storage.write(key: 'userId', value: userId.toString());
+      }
+
       if (!context.mounted) return;
 
       if (userRole.value == 'admin' || userRole.value == 'Admin') {

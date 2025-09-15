@@ -4,7 +4,7 @@ import 'package:conectar_project/repositories/services/user_service.dart';
 class UserRepository {
   final UserService _service = UserService();
 
-  Future<UserModel> getClientById(int id) async {
-    return await _service.getClientById(id);
+  Future<UserModel> getUserById(int id) async {
+    return await _service.getUserById(id);
   }
 }

@@ -1,14 +1,19 @@
 import 'package:conectar_project/models/client_model.dart';
+import 'package:conectar_project/models/user_model.dart';
 import 'package:conectar_project/repositories/client_repository.dart';
 import 'package:conectar_project/repositories/services/clients_service.dart';
+import 'package:conectar_project/repositories/services/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class AdminHomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  final storage = const FlutterSecureStorage();
   late TabController tabController;
   final ClientRepository _repository = ClientRepository();
-  final ClientsService _service = ClientsService();
+  final ClientsService _serviceClient = ClientsService();
+  final UserService _serviceUser = UserService();
   final formKeySearchClients = GlobalKey<FormState>();
   var isLoading = false.obs;
   var expandido = false.obs;
@@ -23,11 +28,13 @@ class AdminHomeController extends GetxController
   final tagCtrl = TextEditingController();
   var statusAtivo = false.obs;
   var possuiConectaPlus = false.obs;
+  var myUser = Rxn<UserModel>();
 
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(length: 1, vsync: this);
+    loadAndFetchUser();
     fetchClients();
   }
 
@@ -68,6 +75,46 @@ class AdminHomeController extends GetxController
     fetchClients();
   }
 
+  // Future<void> loadAndFetchUser() async {
+  //   isLoading.value = true;
+  //   try {
+  //     final userIdString = await storage.read(key: 'userId');
+
+  //     if (userIdString == null) {
+  //       return;
+  //     }
+
+  //     final userId = int.tryParse(userIdString);
+  //     if (userId == null) {
+  //       return;
+  //     }
+
+  //     final client = await _serviceUser.getUserById(userId);
+  //     myUser.value = UserModel.fromJson(client.toJson());
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
+  Future<void> loadAndFetchUser() async {
+    isLoading.value = true;
+    try {
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      final userIdString = await storage.read(key: 'userId');
+      if (userIdString == null) return;
+
+      final userId = int.tryParse(userIdString);
+      if (userId == null) return;
+
+      final client = await _serviceUser.getUserById(userId);
+      myUser.value = UserModel.fromJson(client.toJson());
+    } finally {
+      await Future.delayed(const Duration(milliseconds: 300));
+      isLoading.value = false;
+    }
+  }
+
   Future<void> postClient() async {
     isLoading.value = true;
     try {
@@ -82,11 +129,8 @@ class AdminHomeController extends GetxController
 
       await _repository.createClient(client);
 
-      Get.snackbar('Sucesso', 'Cliente criado com sucesso!');
       fetchClients();
       limparCampos();
-    } catch (e) {
-      Get.snackbar('Erro', 'Erro ao criar cliente: $e');
     } finally {
       isLoading.value = false;
     }
@@ -95,7 +139,7 @@ class AdminHomeController extends GetxController
   Future<void> fetchClients() async {
     isLoading.value = true;
     try {
-      final data = await _service.getClients(
+      final data = await _serviceClient.getClients(
         name: searchNomeCtrl.text,
         cnpj: searchCnpjCtrl.text,
         status: searchStatusCtrl.text,
