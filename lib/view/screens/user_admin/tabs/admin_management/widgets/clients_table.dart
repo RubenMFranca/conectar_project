@@ -72,6 +72,7 @@ class ClientsTable extends StatelessWidget {
   }
 
   Widget _buildDataTable(ThemeData theme, BuildContext context) {
+    final ScrollController scrollController = ScrollController();
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
@@ -96,11 +97,13 @@ class ClientsTable extends StatelessWidget {
       }
 
       return Scrollbar(
+        controller: scrollController,
         thumbVisibility: true,
         interactive: true,
         thickness: 8,
         radius: const Radius.circular(4),
         child: SingleChildScrollView(
+          controller: scrollController,
           scrollDirection: Axis.horizontal,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
