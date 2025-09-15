@@ -22,58 +22,87 @@ class ClientDialog extends StatelessWidget {
       ),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          spacing: 8,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              controller: controller.razaoSocialCtrl,
-              style: const TextStyle(color: Colors.black),
-              decoration: const InputDecoration(labelText: 'Razão social'),
-            ),
-            TextFormField(
-              controller: controller.cnpjCtrl,
-              style: const TextStyle(color: Colors.black),
-              keyboardType: TextInputType.numberWithOptions(decimal: false),
-              inputFormatters: [cnpjMask, LengthLimitingTextInputFormatter(18)],
-              decoration: const InputDecoration(labelText: 'CNPJ'),
-            ),
-            TextFormField(
-              controller: controller.nomeFachadaCtrl,
-              style: const TextStyle(color: Colors.black),
-              decoration: const InputDecoration(labelText: 'Nome na fachada'),
-            ),
-            TextFormField(
-              controller: controller.tagCtrl,
-              style: const TextStyle(color: Colors.black),
-              decoration: const InputDecoration(labelText: 'Tag'),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Status'),
-                Obx(
-                  () => Switch(
-                    value: controller.statusAtivo.value,
-                    onChanged: (val) => controller.statusAtivo.value = val,
+        child: Form(
+          key: controller.formKeyCreateClients,
+          child: Column(
+            spacing: 8,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: controller.razaoSocialCtrl,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(labelText: 'Razão social'),
+                validator: (value) {
+                  if (value != null) {
+                    return 'Campo obrigatório';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: controller.cnpjCtrl,
+                style: const TextStyle(color: Colors.black),
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                inputFormatters: [
+                  cnpjMask,
+                  LengthLimitingTextInputFormatter(18),
+                ],
+                decoration: const InputDecoration(labelText: 'CNPJ'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'CNPJ obrigatório';
+                  if (value.length < 18) return 'CNPJ incompleto';
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: controller.nomeFachadaCtrl,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(labelText: 'Nome na fachada'),
+                validator: (value) {
+                  if (value != null) {
+                    return 'Campo obrigatório';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: controller.tagCtrl,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(labelText: 'Tag'),
+                validator: (value) {
+                  if (value != null) {
+                    return 'Campo obrigatório';
+                  }
+                  return null;
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Status'),
+                  Obx(
+                    () => Switch(
+                      value: controller.statusAtivo.value,
+                      onChanged: (val) => controller.statusAtivo.value = val,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Possui Conecta Plus?'),
-                Obx(
-                  () => Switch(
-                    value: controller.possuiConectaPlus.value,
-                    onChanged: (val) =>
-                        controller.possuiConectaPlus.value = val,
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Possui Conecta Plus?'),
+                  Obx(
+                    () => Switch(
+                      value: controller.possuiConectaPlus.value,
+                      onChanged: (val) =>
+                          controller.possuiConectaPlus.value = val,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       actions: [
@@ -87,15 +116,24 @@ class ClientDialog extends StatelessWidget {
               },
               child: const Text('Cancelar'),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await controller.postClient();
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text('Salvar'),
-            ),
+            Obx(() {
+              return ElevatedButton(
+                onPressed: () async {
+                  // if (controller.formKeyCreateClients.currentState!
+                  //     .validate()) {
+                  await controller.postClient(context);
+                  // if (context.mounted) {
+                  //   Navigator.of(context).pop();
+                  // }
+                  // }
+                },
+                child: controller.isLoading.value
+                    ? CircularProgressIndicator(
+                        color: theme.colorScheme.secondary,
+                      )
+                    : const Text('Salvar'),
+              );
+            }),
           ],
         ),
       ],

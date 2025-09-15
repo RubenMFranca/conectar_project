@@ -3,9 +3,11 @@ import 'package:conectar_project/models/user_model.dart';
 import 'package:conectar_project/repositories/client_repository.dart';
 import 'package:conectar_project/repositories/services/clients_service.dart';
 import 'package:conectar_project/repositories/services/user_service.dart';
+import 'package:conectar_project/view/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class AdminHomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -15,6 +17,7 @@ class AdminHomeController extends GetxController
   final ClientsService _serviceClient = ClientsService();
   final UserService _serviceUser = UserService();
   final formKeySearchClients = GlobalKey<FormState>();
+  final formKeyCreateClients = GlobalKey<FormState>();
   var isLoading = false.obs;
   var expandido = false.obs;
   var clients = <ClientModel>[].obs;
@@ -29,6 +32,7 @@ class AdminHomeController extends GetxController
   var statusAtivo = false.obs;
   var possuiConectaPlus = false.obs;
   var myUser = Rxn<UserModel>();
+  var errorMessage = ''.obs;
 
   @override
   void onInit() {
@@ -94,8 +98,10 @@ class AdminHomeController extends GetxController
     }
   }
 
-  Future<void> postClient() async {
+  Future<void> postClient(BuildContext context) async {
     isLoading.value = true;
+    errorMessage.value = '';
+
     try {
       final client = ClientModel(
         razaoSocial: razaoSocialCtrl.text.trim(),
@@ -108,8 +114,26 @@ class AdminHomeController extends GetxController
 
       await _repository.createClient(client);
 
+      CustomDialog.success(
+        context: context,
+        message: 'Cliente criado com sucesso!',
+        onPressed: () {
+          context.pop();
+          context.pop();
+        },
+      );
+
       fetchClients();
-      limparCampos();
+      resetClientFields();
+    } catch (e) {
+      CustomDialog.error(
+        context: context,
+        message:
+            'Falha ao cadastrar o cliente, recarregue a página e tente novamente.',
+        onPressed: () {
+          context.pop();
+        },
+      );
     } finally {
       isLoading.value = false;
     }
