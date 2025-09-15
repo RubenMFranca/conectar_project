@@ -75,27 +75,6 @@ class AdminHomeController extends GetxController
     fetchClients();
   }
 
-  // Future<void> loadAndFetchUser() async {
-  //   isLoading.value = true;
-  //   try {
-  //     final userIdString = await storage.read(key: 'userId');
-
-  //     if (userIdString == null) {
-  //       return;
-  //     }
-
-  //     final userId = int.tryParse(userIdString);
-  //     if (userId == null) {
-  //       return;
-  //     }
-
-  //     final client = await _serviceUser.getUserById(userId);
-  //     myUser.value = UserModel.fromJson(client.toJson());
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
   Future<void> loadAndFetchUser() async {
     isLoading.value = true;
     try {
