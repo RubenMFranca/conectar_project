@@ -9,6 +9,7 @@ class AdminHomeController extends GetxController
   late TabController tabController;
   final ClientRepository _repository = ClientRepository();
   final ClientsService _service = ClientsService();
+  final formKeySearchClients = GlobalKey<FormState>();
   var isLoading = false.obs;
   var expandido = false.obs;
   var clients = <ClientModel>[].obs;
@@ -41,8 +42,22 @@ class AdminHomeController extends GetxController
     super.onClose();
   }
 
+  void resetClientFields() {
+    razaoSocialCtrl.clear();
+    cnpjCtrl.clear();
+    nomeFachadaCtrl.clear();
+    tagCtrl.clear();
+    statusAtivo.value = false;
+    possuiConectaPlus.value = false;
+  }
+
   void toggleExpandido() {
-    expandido.value = !expandido.value;
+    if (expandido.value) {
+      limparCampos();
+      expandido.value = false;
+    } else {
+      expandido.value = true;
+    }
   }
 
   void limparCampos() {

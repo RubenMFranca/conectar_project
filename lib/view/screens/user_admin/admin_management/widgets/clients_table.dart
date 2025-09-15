@@ -182,7 +182,7 @@ class ClientsTable extends StatelessWidget {
                       DataCell(Text(client.nomeFachada)),
                       DataCell(Text(client.tag)),
                       DataCell(Text(client.status)),
-                      DataCell(Text(client.conectaPlus.toString())),
+                      DataCell(Text(client.conectaPlus ? 'Sim' : 'Não')),
                     ],
                   );
                 }).toList(),
