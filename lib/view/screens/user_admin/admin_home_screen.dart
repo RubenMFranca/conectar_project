@@ -1,4 +1,6 @@
-import 'package:conectar_project/view/screens/user_admin/admin_management/admin_management.dart';
+import 'package:conectar_project/view/screens/user_admin/tabs/admin_management/admin_management.dart';
+import 'package:conectar_project/view/screens/user_admin/tabs/inside_information/inside_information.dart';
+import 'package:conectar_project/view/screens/user_admin/tabs/my_user/my_user.dart';
 import 'package:conectar_project/view/widgets/header_component.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +40,7 @@ class AdminHomeScreen extends StatelessWidget {
                       tabs: [
                         Tab(text: 'Dados Básicos'),
                         Tab(text: 'Informações Internas'),
-                        Tab(text: 'Usuários'),
+                        Tab(text: 'Usuário'),
                       ],
                     ),
                   ),
@@ -47,43 +49,7 @@ class AdminHomeScreen extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                children: [
-                  AdminManagement(),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.settings, size: 50, color: Colors.grey),
-                        SizedBox(height: 10),
-                        Text(
-                          'Funcionalidade em desenvolvimento',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 20),
-                      ],
-                    ),
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.person_off_outlined,
-                          size: 50,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Você ainda não tem usuários cadastrados.',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 20),
-                      ],
-                    ),
-                  ),
-                ],
+                children: [AdminManagement(), InsideInformation(), MyUser()],
               ),
             ),
           ],
