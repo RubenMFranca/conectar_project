@@ -126,8 +126,6 @@ class AdminHomeController extends GetxController
       );
 
       clients.value = data;
-    } catch (e) {
-      Get.snackbar('Erro', e.toString());
     } finally {
       isLoading.value = false;
     }

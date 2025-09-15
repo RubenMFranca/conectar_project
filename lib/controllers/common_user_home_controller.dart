@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 class CommonUserhomeController extends GetxController {
   final storage = const FlutterSecureStorage();
   final UserService _service = UserService();
-  var selectedClient = Rxn<UserModel>();
+  var myUser = Rxn<UserModel>();
   var isLoading = false.obs;
 
   @override
@@ -30,7 +30,7 @@ class CommonUserhomeController extends GetxController {
       }
 
       final client = await _service.getUserById(userId);
-      selectedClient.value = UserModel.fromJson(client.toJson());
+      myUser.value = UserModel.fromJson(client.toJson());
     } finally {
       isLoading.value = false;
     }
