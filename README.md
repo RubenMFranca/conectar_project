@@ -16,6 +16,54 @@ Este projeto é responsável pela interface do usuário (clientes e administrado
 
 ---
 
+# Documentação de Arquitetura – Conéctar App
+
+## Organização de Pastas
+
+lib/
+├── controllers/ # Lógica de estado e UI (GetX)
+├── core/ # Serviços genéricos (ex: ApiClient)
+├── models/ # Modelos de dados (UserModel, ClientModel)
+├── repositories/ # Comunicação entre Controller e Service
+├── ui/ # Telas e componentes visuais
+├── utils/ # Utilitários e helpers
+
+Escolha adotada: separar controllers, repositories e services mantém a arquitetura limpa, seguindo padrões semelhantes a MVC e Clean Architecture.
+O core contém apenas serviços genéricos reutilizáveis (ex.: ApiClient) para evitar duplicação.
+
+## Serviços e Repositórios
+
+● ApiClient: centraliza chamadas HTTP, adicionando token JWT automaticamente.
+● Repositórios: camada intermediária entre Controller e Service.
+● Services: realizam chamadas HTTP reais.
+
+Benefício: separação de lógica de negócios da API, facilitando testes e
+mudançasmudanças na API sem impactar a UI.
+
+## Login e Autenticação
+
+Fluxo: LoginController → AuthRepository → AuthService → LoginModel →
+token salvo no FlutterSecureStorage → navegação via GoRouter baseada em role.
+Escolha adotada: token e dados do usuário acessíveis globalmente; redirecionamento
+seguro por role.
+
+## UI e Componentização
+
+● Componentes reutilizáveis: HeaderComponent, ClientDialog.
+● DataTable responsiva: SingleChildScrollView + Scrollbar.
+● Formulários: TextFormField + TextEditingController, máscaras, validações
+condicionais, switches.
+
+Benefício: reutilização, consistência visual e experiência do usuário aprimorada.
+
+## Escolhas Gerais
+
+● Segurança: token JWT seguro no FlutterSecureStorage.
+● Escalabilidade: fácil adição de novas telas e funcionalidades.
+● Reatividade: GetX .obs atualiza UI automaticamente.
+● Navegação: GoRouter declarativo, context.go() e redirect para fluxo seguro.
+● Estado: GetX, Controllers por tela, variáveis reativas.
+
 ## Pré-requisitos
 
 Antes de rodar o projeto, você precisa ter instalado:
