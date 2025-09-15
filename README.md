@@ -5,7 +5,7 @@ Este projeto é responsável pela interface do usuário (clientes e administrado
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - [Flutter](https://flutter.dev/) (>= 3.x.x)
 - [Dart](https://dart.dev/)
@@ -16,7 +16,7 @@ Este projeto é responsável pela interface do usuário (clientes e administrado
 
 ---
 
-## 📦 Pré-requisitos
+## Pré-requisitos
 
 Antes de rodar o projeto, você precisa ter instalado:
 
@@ -30,7 +30,7 @@ Antes de rodar o projeto, você precisa ter instalado:
 
 ---
 
-## 🛠️ Instalação e Configuração
+## Instalação e Configuração
 
 Clone este repositório no seu ambiente local:
 
