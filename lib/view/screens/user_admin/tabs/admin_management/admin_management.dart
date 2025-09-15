@@ -1,6 +1,6 @@
 import 'package:conectar_project/controllers/admin_home_controller.dart';
-import 'package:conectar_project/view/screens/user_admin/admin_management/widgets/clients_filter.dart';
-import 'package:conectar_project/view/screens/user_admin/admin_management/widgets/clients_table.dart';
+import 'package:conectar_project/view/screens/user_admin/tabs/admin_management/widgets/clients_filter.dart';
+import 'package:conectar_project/view/screens/user_admin/tabs/admin_management/widgets/clients_table.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
