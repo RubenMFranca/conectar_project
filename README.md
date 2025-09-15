@@ -50,6 +50,7 @@ mudançasmudanças na API sem impactar a UI.
 
 Fluxo: LoginController → AuthRepository → AuthService → LoginModel →
 token salvo no FlutterSecureStorage → navegação via GoRouter baseada em role.
+
 Escolha adotada: token e dados do usuário acessíveis globalmente; redirecionamento
 seguro por role.
 
