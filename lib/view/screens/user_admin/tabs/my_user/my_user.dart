@@ -1,4 +1,5 @@
 import 'package:conectar_project/controllers/admin_home_controller.dart';
+import 'package:conectar_project/view/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -103,7 +104,11 @@ class MyUser extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          // clientHomeController.fetchClientById(2);
+                          CustomDialog.warning(
+                            context: context,
+                            message:
+                                'A página de edição de usuário está em desenvolvimento',
+                          );
                         },
                         child: Text('Editar'),
                       ),

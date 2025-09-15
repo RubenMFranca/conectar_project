@@ -33,6 +33,22 @@ class CustomDialog {
     );
   }
 
+  static void warning({
+    required BuildContext context,
+    required String message,
+    String buttonText = "OK",
+    VoidCallback? onPressed,
+  }) {
+    _showDialog(
+      context: context,
+      message: message,
+      buttonText: buttonText,
+      icon: Icon(Icons.warning, color: Colors.yellow[700], size: 50),
+      buttonColor: Color(0xffef4444),
+      onPressed: onPressed,
+    );
+  }
+
   static void _showDialog({
     required BuildContext context,
     required String message,

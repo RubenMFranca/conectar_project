@@ -1,8 +1,8 @@
 import 'package:conectar_project/controllers/admin_home_controller.dart';
 import 'package:conectar_project/view/widgets/client_dialog.dart';
+import 'package:conectar_project/view/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 
 class ClientsTable extends StatelessWidget {
   final AdminHomeController controller;
@@ -176,7 +176,11 @@ class ClientsTable extends StatelessWidget {
                   return DataRow(
                     onSelectChanged: (selected) {
                       if (selected ?? false) {
-                        context.go('/clients/edit/${client.id}');
+                        CustomDialog.warning(
+                          context: context,
+                          message:
+                              'A página de edição de cliente está em desenvolvimento',
+                        );
                       }
                     },
                     cells: [

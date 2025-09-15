@@ -1,4 +1,5 @@
 import 'package:conectar_project/controllers/common_user_home_controller.dart';
+import 'package:conectar_project/view/widgets/custom_dialog.dart';
 import 'package:conectar_project/view/widgets/header_component.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,15 +54,14 @@ class CommonUserHomeScreen extends StatelessWidget {
                               }
                               return Obx(() {
                                 if (clientHomeController.isLoading.value ||
-                                    clientHomeController.selectedClient.value ==
-                                        null) {
+                                    clientHomeController.myUser.value == null) {
                                   return Center(
                                     child: CircularProgressIndicator(),
                                   );
                                 }
 
                                 final client =
-                                    clientHomeController.selectedClient.value!;
+                                    clientHomeController.myUser.value!;
                                 final formattedDate = DateFormat('dd/MM/yyyy')
                                     .format(
                                       DateTime.parse(
@@ -123,7 +123,11 @@ class CommonUserHomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () {
-                                  // clientHomeController.fetchClientById(2);
+                                  CustomDialog.warning(
+                                    context: context,
+                                    message:
+                                        'A página de edição de usuário está em desenvolvimento',
+                                  );
                                 },
                                 child: Text('Editar'),
                               ),
