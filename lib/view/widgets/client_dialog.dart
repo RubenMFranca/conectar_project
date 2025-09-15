@@ -1,5 +1,7 @@
 import 'package:conectar_project/controllers/admin_home_controller.dart';
+import 'package:conectar_project/utils/mask.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ClientDialog extends StatelessWidget {
@@ -32,6 +34,8 @@ class ClientDialog extends StatelessWidget {
             TextFormField(
               controller: controller.cnpjCtrl,
               style: const TextStyle(color: Colors.black),
+              keyboardType: TextInputType.numberWithOptions(decimal: false),
+              inputFormatters: [cnpjMask, LengthLimitingTextInputFormatter(18)],
               decoration: const InputDecoration(labelText: 'CNPJ'),
             ),
             TextFormField(
@@ -79,6 +83,7 @@ class ClientDialog extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                controller.resetClientFields();
               },
               child: const Text('Cancelar'),
             ),

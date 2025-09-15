@@ -1,5 +1,7 @@
 import 'package:conectar_project/controllers/admin_home_controller.dart';
+import 'package:conectar_project/utils/mask.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ClientsFilter extends StatelessWidget {
@@ -75,9 +77,17 @@ class ClientsFilter extends StatelessWidget {
           AnimatedRotation(
             duration: const Duration(milliseconds: 300),
             turns: controller.expandido.value ? 0.5 : 0.0,
-            child: Icon(
-              Icons.keyboard_arrow_down,
+            child: IconButton(
+              icon: Icon(Icons.keyboard_arrow_down),
               color: theme.colorScheme.primary,
+              onPressed: () {
+                if (controller.expandido.value) {
+                  controller.limparCampos();
+                  controller.expandido.value = false;
+                } else {
+                  controller.expandido.value = true;
+                }
+              },
             ),
           ),
         ],
@@ -86,27 +96,51 @@ class ClientsFilter extends StatelessWidget {
   }
 
   Widget _buildFilterFields(ThemeData theme) {
-    return Wrap(
-      spacing: 24,
-      runSpacing: 16,
-      children: [
-        _campoFiltro("Buscar por nome", theme, controller.searchNomeCtrl),
-        _campoFiltro("Buscar por CNPJ", theme, controller.searchCnpjCtrl),
-        _campoFiltro("Buscar por status", theme, controller.searchStatusCtrl),
-        _campoFiltro(
-          "Buscar por razão social",
-          theme,
-          controller.searchRazaoSocialCtrl,
-        ),
-      ],
+    return Form(
+      key: controller.formKeySearchClients,
+      child: Wrap(
+        spacing: 24,
+        runSpacing: 16,
+
+        children: [
+          _campoFiltro("Buscar por nome", theme, controller.searchNomeCtrl),
+          _campoFiltro(
+            "Buscar por CNPJ",
+            theme,
+            controller.searchCnpjCtrl,
+            keyboardType: TextInputType.numberWithOptions(decimal: false),
+            inputFormatters: [cnpjMask, LengthLimitingTextInputFormatter(18)],
+            validator: (value) {
+              if (value != null && value.isNotEmpty) {
+                if (value.length < 18) return 'CNPJ incompleto';
+              }
+              return null;
+            },
+          ),
+          _campoFiltro(
+            "Buscar por status",
+            theme,
+            controller.searchStatusCtrl,
+            keyboardType: TextInputType.text,
+          ),
+          _campoFiltro(
+            "Buscar por razão social",
+            theme,
+            controller.searchRazaoSocialCtrl,
+          ),
+        ],
+      ),
     );
   }
 
   Widget _campoFiltro(
     String label,
     ThemeData theme,
-    TextEditingController textController,
-  ) {
+    TextEditingController textController, {
+    TextInputType keyboardType = TextInputType.text,
+    List<TextInputFormatter>? inputFormatters,
+    String? Function(String?)? validator,
+  }) {
     return SizedBox(
       width: 300,
       child: Column(
@@ -117,6 +151,9 @@ class ClientsFilter extends StatelessWidget {
           TextFormField(
             controller: textController,
             style: const TextStyle(color: Colors.black),
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
+            validator: validator,
             decoration: InputDecoration(
               isDense: true,
               border: OutlineInputBorder(
@@ -130,40 +167,58 @@ class ClientsFilter extends StatelessWidget {
   }
 
   Widget _buildActions(ThemeData theme) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        SizedBox(
-          width: 120,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colorScheme.secondary,
-              foregroundColor: theme.colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-                side: BorderSide(color: theme.colorScheme.primary, width: 1),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Row(
+          mainAxisAlignment: constraints.maxWidth < 650
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.end,
+          children: [
+            SizedBox(
+              width: 140,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.secondary,
+                  foregroundColor: theme.colorScheme.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: BorderSide(
+                      color: theme.colorScheme.primary,
+                      width: 1,
+                    ),
+                  ),
+                ),
+                onPressed: controller.limparCampos,
+                child: const Text(
+                  'Limpar campos',
+                  style: TextStyle(fontSize: 12),
+                ),
               ),
             ),
-            onPressed: controller.limparCampos,
-            child: const Text('Limpar campos', style: TextStyle(fontSize: 12)),
-          ),
-        ),
-        const SizedBox(width: 12),
-        SizedBox(
-          width: 120,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colorScheme.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+            const SizedBox(width: 12),
+            SizedBox(
+              width: 140,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                onPressed: () {
+                  if (controller.formKeySearchClients.currentState!
+                      .validate()) {
+                    controller.fetchClients();
+                  }
+                },
+
+                child: const Text('Filtrar', style: TextStyle(fontSize: 12)),
               ),
             ),
-            onPressed: controller.fetchClients,
-            child: const Text('Filtrar', style: TextStyle(fontSize: 12)),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
