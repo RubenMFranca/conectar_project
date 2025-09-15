@@ -61,3 +61,14 @@ Para rodar em um dispositivo ou emulador específico:
 ``bash`
 flutter devices
 flutter run -d <ID_DO_DISPOSITIVO>
+
+## Usuários de Teste
+
+Para facilitar os testes da aplicação, os seguintes usuários já estão cadastrados no banco de dados:
+
+| Nome                     | Email           | Senha     | Papel       |
+| ------------------------ | --------------- | --------- | ----------- |
+| Admin Conectar           | admin@email.com | senha1234 | admin       |
+| Usuário Regular Conectar | user@email.com  | senha1234 | userRegular |
+
+> 💡 Observação: Essas contas podem ser usadas diretamente para login na aplicação. Caso o banco seja reiniciado, certifique-se de recriar esses usuários.
