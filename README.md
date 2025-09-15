@@ -21,12 +21,18 @@ Este projeto é responsável pela interface do usuário (clientes e administrado
 ## Organização de Pastas
 
 lib/
-├── controllers/ # Lógica de estado e UI (GetX)
-├── core/ # Serviços genéricos (ex: ApiClient)
-├── models/ # Modelos de dados (UserModel, ClientModel)
-├── repositories/ # Comunicação entre Controller e Service
-├── ui/ # Telas e componentes visuais
-├── utils/ # Utilitários e helpers
+
+     ├── controllers/ # Lógica de estado e UI (GetX)
+
+     ├── core/ # Serviços genéricos (ex: ApiClient)
+
+     ├── models/ # Modelos de dados (UserModel, ClientModel)
+
+     ├── repositories/ # Comunicação entre Controller e Service
+
+     ├── ui/ # Telas e componentes visuais
+
+     ├── utils/ # Utilitários e helpers
 
 Escolha adotada: separar controllers, repositories e services mantém a arquitetura limpa, seguindo padrões semelhantes a MVC e Clean Architecture.
 O core contém apenas serviços genéricos reutilizáveis (ex.: ApiClient) para evitar duplicação.
